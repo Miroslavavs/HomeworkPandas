@@ -1,0 +1,63 @@
+# Import Dependencies
+
+import csv 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Import Dependencies
+
+import csv 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+# Rename col "name" in school_df to "school name"
+school_df.rename_axis({"name" : "school name"}, axis=1, inplace=True)
+
+# Make a copy of school_df to manipulate and reuse later throughout the code
+# Store renamed school_df as new df
+copy_school_sum = school_df.copy()
+
+renamed_student_df = student_df.rename(columns={"school" : "SCHOOL NAME"})
+# Total Schools
+total_schools = school_df["school name"].count()
+#print(total_schools)
+
+
+# Total Students
+total_students = renamed_student_df["school name"].count()
+#print(total_students)
+
+# Total Budget
+total_budget = school_df["budget"].sum()
+
+# Average Math Score
+avg_math_score = renamed_student_df["math_score"].mean()
+
+#Average Reading Score
+avg_read_score = renamed_student_df["reading_score"].mean()
+math_pass = renamed_student_df.loc[(student_df["math_score"] >= 70)]
+count_pass_math = math_pass["math_score"].count()
+per_math_pass = (count_pass_math/total_students)*100
+read_pass = renamed_student_df.loc[(student_df["reading_score"] >= 70)]
+count_pass_read = read_pass["reading_score"].count()
+per_read_pass = (count_pass_read/total_students)*100
+overall_pass = (per_math_pass + per_read_pass)/2
+district_summary = {"Total Schools" : total_schools,
+                   "Total Students" : total_students,
+                   "Total Budget" : total_budget,
+                   "Average Math Score" : avg_math_score,
+                   "Average Reading Score" : avg_read_score,
+                    "% Passing Math" : per_math_pass,
+                   "% Passing Reading" : per_read_pass,
+                   "% Overall Passing" : overall_pass
+                  }
+district_summary_df = pd.DataFrame([district_summary])                                              
+                                   
+district_summary_df = district_summary_df[["Total Schools",
+                   "Total Students","Total Budget","Average Math Score", "Average Reading Score",
+                   "% Passing Math", "% Passing Reading", "% Overall Passing" ]]
+district_summary_df
+
+copy_school_sum['Per Student Budget'] = copy_school_sum['budget']/copy_school_sum['size']
+avg_math_read_tbl = renamed_student_df.groupby(['school name'])['reading_score', 'math_score'].mean().reset_index()
